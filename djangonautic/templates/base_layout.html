@@ -1,0 +1,52 @@
+{% load static from static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+
+        <title></title>
+        <meta name="description" content="DESCRIPTION" />
+
+        <link href="{% static 'style.css' %}" rel="stylesheet" />
+    </head>
+
+    <body>
+        <header class="wrapper">
+            <h1>
+                <a href="{% url 'home' %}"
+                    ><img src="{% static 'logo.png' %}" alt=""
+                /></a>
+            </h1>
+            <nav>
+                <ul>
+                    {% if user.is_authenticated %}
+                    <li>
+                        <form
+                            class="logout-link"
+                            action="{% url 'accounts:logout' %}"
+                            method="post"
+                        >
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
+                    </li>
+                    <li>
+                        <a href="{% url 'articles:create' %}" class="highlight"
+                            >New Article</a
+                        >
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'accounts:login' %}">Login</a></li>
+                    <li><a href="{% url 'accounts:signup' %}">Signup</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+
+        <div class="wrapper">{% block content %} {% endblock %}</div>
+        <script defer src="{% static 'slugify.js' %}"></script>
+    </body>
+</html>
